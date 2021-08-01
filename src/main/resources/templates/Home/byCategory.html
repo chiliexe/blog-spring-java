@@ -1,0 +1,53 @@
+<html layout:decorate="layout">
+ <head>
+     <title th:text="|Blog DevJava - ${category}|"></title>
+ </head>
+
+  <!-- Page Content -->
+  <div layout:fragment="content">
+    <!-- Page Content -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="text-center my-4">Postagens da categoria: 
+                <span th:text="${posts.size() > 0} ? ${category} : 'Sem postagens para a categoria: ' + ${category} "></span>
+            </h4>
+            <hr>
+            <!-- CONTENT -->
+            <div class="card-columns mt-4">
+                <!-- FOR LOOP -->
+                <div class="card" th:each=" post : ${posts}" >
+
+                    <a th:href="@{'/post/' + ${post.slug}}" >
+                        <img class="card-img-top"
+                            th:src="@{'/uploads/' + ${post.image}}"
+                            alt="Card image cap">
+                    </a>
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a th:href="@{'/post/' + ${post.slug}}" th:text="${post.title}">
+                                
+                            </a>
+                        </h5>
+                        <p class="card-text" th:text="${post.summary}"> ...</p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <span th:text="${post.createdAt}"></span> |
+                                <span th:text="${post.comments.size()}"></span> |
+                                <span th:text="${post.category.name}"></span>
+                            </small>
+                        </p>
+
+                        <div class="text-right">
+                            <a th:href="@{'/post/' + ${post.slug}}" class="btn btn-outline-secondary">Ler mais...</a>
+                        </div>
+                    </div>
+                </div>
+                <!--/FOR LOOP-->
+            </div>
+            <!--/CONTENT-->
+        </div>
+    </div>
+  </div>
+
+</html>

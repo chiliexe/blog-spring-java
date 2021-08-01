@@ -1,0 +1,121 @@
+<html layout:decorate="layout">
+
+<head>
+    <title th:text="${post.title}"></title>
+</head>
+
+<div layout:fragment="content">
+
+    <!-- Page Content -->
+
+    <div class="row">
+        <div class="col-lg-12">
+
+
+            <!-- POST -->
+            <div class="row pt-5">
+                <div class="col-xl"></div>
+                <div class="col-xl-8 text-center">
+                    <h2 th:text="${post.title}"></h2>
+                    <h5 th:text="${post.summary}"> ...</h5>
+                    <p class="text-muted mt-4">
+                        <small>
+                            Autor <span th:text="${post.user.name}"></span> |
+                            Criado em <span th:text="${post.createdAt}"></span> |
+                            Atualizado em <span th:text="${post.updatedAt}"></span> |
+                            <span th:text="${post.category.name}"></span>
+                        </small>
+                    </p>
+                </div>
+                <div class="col-xl"></div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-8">
+
+                    <img class="img-fluid pb-5 " th:src="@{'/uploads/' + ${post.image}}" alt="">
+
+                    <div th:utext="${post.content}">
+
+                    </div>
+
+                </div>
+                <div class="col-xl-2"></div>
+            </div>
+
+
+            <div class="row pt-5">
+                <div class="col-xl"></div>
+                <div class="col-xl-8">
+                    <h2 class="my-3">Comentários (<span th:text="${post.comments.size()}"></span>)</h2>
+
+
+                    <div th:each="comment : ${post.comments}">
+                        <h5 class="mb-2 mt-5"><span th:text="${comment.name}"></span> disse:</h5>
+                        <p th:text="${comment.content}" class="mb-1"></p>
+
+                    </div>
+
+
+                </div>
+                <div class="col-xl"></div>
+            </div>
+
+
+            <div class="row pt-5">
+                <div class="col-xl"></div>
+                <div class="col-xl-8">
+                    <h2 class="my-3">Deixe um comentário</h2>
+
+                    <form method="POST" th:action="@{'/post/comentario/' + ${slug}}" th:object="${comment}">
+
+                        <table class="table">
+                            <tr>
+                                <th><label for="name">Nome: </label></th>
+                                <td>
+                                    <input type="text" th:field="*{name}" required maxlength="100" id="name">
+                                    <span th:if="${#fields.hasErrors('name')}" 
+                                        th:text="${#fields.errors('name').get(0)}" class="text-danger">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="content">Comentário:</label></th>
+                                <td>
+                                    <textarea th:field="*{content}" id="content" maxlength="300" required>
+                                    </textarea>
+                                    <span th:if="${#fields.hasErrors('content')}" 
+                                        th:text="${#fields.errors('content').get(0)}" class="text-danger">
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                            <tr>
+                                <td colspan="2">
+                                    <button type="submit" class="btn btn-primary">Comentar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+
+
+                </div>
+                <div class="col-xl"></div>
+            </div>
+        </div>
+        <!-- POST -->
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+</html>
