@@ -1,0 +1,43 @@
+<html layout:decorate="layout">
+
+    <head>
+        <title>Editar seus dados</title>
+    </head>
+
+    <div layout:fragment="content">
+        <h4 class="text-center my-3">Atualizando dados do usuário</h4>
+        <form th:object="${user}" method="POST" class="my-4">
+
+
+            <div class="form-group">
+                <label for="name">Nome: </label>
+                <input type="text" th:field="*{name}" id="name" class="form-control">
+                <span th:errors="*{name}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="lastname">Sobrenome: </label>
+                <input type="text" th:field="*{lastname}" id="lastname" class="form-control">
+                <span th:errors="*{lastname}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email: </label>
+                <input type="text" th:field="*{email}" id="email" class="form-control">
+                <span th:errors="*{email}"></span>
+            </div>
+
+            <input type="hidden" th:field="*{id}" th:value="${user.id}">
+
+            <input type="hidden"
+                th:name = "${_csrf.parameterName}"
+                th:value = "${_csrf.token}">
+
+            <button class="btn btn-primary" type="submit">Atualizar</button>
+        </form>
+
+
+    </div>
+
+
+</html>

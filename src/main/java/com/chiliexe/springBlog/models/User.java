@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,7 +31,10 @@ public class User implements UserDetails {
 
 	private String name;
 	private String lastname;
+
+	@NotBlank(message = "Email não pode estar vazio")
 	private String email;
+
 	private String password;
 
 	private String authority;

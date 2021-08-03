@@ -7,10 +7,14 @@ import com.chiliexe.springBlog.models.Category;
 import com.chiliexe.springBlog.models.Post;
 import com.chiliexe.springBlog.models.User;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long>{
-    Optional<Post> findBySlug(String slug);
-    Optional<List<Post>> findByCategoryOrderByIdDesc(Category category);
-    List<Post> findByUser(User user);
+
+    List<Post> findAllByPublishedTrue(Sort sort);
+    Optional<Post> findBySlugAndPublishedTrue(String slug);
+    List<Post> findByUserAndPublishedTrue(User user, Sort sort);
+    Optional<Post> findByUserAndSlugAndPublishedTrue(User user, String slug);
+    Optional<List<Post>> findByCategoryAndPublishedTrue(Category category, Sort sort);
 }

@@ -1,48 +1,49 @@
-
-
 <html layout:decorate="layout">
-    <head><title>Criar Nova Postagem</title></head>
+    <head><title>Atualizar suas Postagens</title></head>
+
+    
     <div layout:fragment="content">
-        <h4 class="text-center my-4">Criar uma nova postagem</h4>
+        <h4 class="text-center my-4">Editar Postagem: </h4>
+
+        
         <form method="POST" enctype="multipart/form-data" th:object="${post}">
 
 
             <div class="form-group">
                 <label for="title">Título</label>
                 <input type="text" th:field="*{title}" id="title" class="form-control">
-                <span th:if="${#fields.hasErrors('title')}" 
-                th:text="${#fields.errors('title').get(0)}" class="text-danger"></span>
+                <span th:errors="*{title}" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label for="summary">Resumo</label>
                 <textarea type="text" th:field="*{summary}" minlength="150" id="summary" class="form-control" maxlength="150">
                 </textarea>
-                <span th:if="${#fields.hasErrors('summary')}" 
-                th:text="${#fields.errors('summary').get(0)}" class="text-danger"></span>
+                <span th:errors="*{summary}" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="content">Conteúdo</label>
                 <textarea type="text" th:field="*{content}" id="content" class="form-control" cols="10" rows="20">
                 </textarea>
-                <span th:if="${#fields.hasErrors('content')}" 
-                th:text="${#fields.errors('content').get(0)}" class="text-danger"></span>
+                <span th:errors="*{content}" class="text-danger"></span>
             </div>
             <div class="form-group ">
                 <label for="category">Categoria</label>
                 <select name="" id="category" th:field="*{category}" class="form-control">
-                    <option value="">Escolha uma categoria</option>
-                    <option th:each="category : ${categories}" 
+                    <option th:value="${post.category.id}" th:text="${post.category.name}"></option>
+                    <option th th:each="category : ${categories}" 
                         th:value="${category.getId()}" 
-                        th:text="${category.getName()}">
+                        th:text="${category.getName()}"
+                        th:if="${post.category.id != category.getId()}">
                     </option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="image">Imagem</label>
                 <input accept="image/png, image/jpeg" name="file" type="file" id="image" class="form-control">
-                <span th:if="${#fields.hasErrors('image')}" 
-                th:text="${#fields.errors('image').get(0)}" class="text-danger"></span>
+                <span th:errors="*{image}" class="text-danger"></span>
+                <hr>
+                <span>Imagem Anterior</span> <img th:src="@{'/uploads/' + ${post.image}}" alt="" width="60px" height="60px" class="rounded">
             </div>
 
 

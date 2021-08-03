@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class Post {
 
 	@Column(columnDefinition = "TEXT", length = 150, nullable = false)
 	@NotBlank(message = "Preencha o campo Resumo")
+	@Min(value =  150, message = "Ocampo resumo deve conter 150 caracteres")
 	private String summary;
 
 	@Column(columnDefinition = "TEXT", nullable = false)

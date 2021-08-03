@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PostService {
-    
+
     @Autowired
     private PostRepository repository;
 
@@ -31,45 +31,64 @@ public class PostService {
     @Autowired
     private ImageUpload imageUpload;
 
-
-    public Post findBySlug(String slug)
-    {
-        Post post = repository.findBySlug(slug)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+    public Post findBySlug(String slug) {
+        Post post = repository.findBySlugAndPublishedTrue(slug)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         return post;
     }
-    public List<Post> findByUser(User user)
-    {
-        return repository.findByUser(user);
+
+    public List<Post> findByUser(User user) {
+        return repository.findByUserAndPublishedTrue(user, Sort.by("id").descending());
     }
-    public List<Post> findByCategory(String category)
-    {
+
+    public List<Post> findByCategory(String category) {
         var categoryObj = categoryRepository.findByName(category)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        List<Post> posts = repository.findByCategoryOrderByIdDesc(categoryObj)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        List<Post> posts = repository.findByCategoryAndPublishedTrue(categoryObj, Sort.by("id").descending())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         return posts;
     }
 
-    public List<Post> findAll() {
-        return repository.findAll(Sort.by("id").descending());
+    public Post findByUserAndSlug(User user, String slug) {
+        return repository.findByUserAndSlugAndPublishedTrue(user, slug)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
-
+    public List<Post> findAll() {
+        return repository.findAllByPublishedTrue(Sort.by("id").descending());
+    }
 
     public Post save(@Valid Post post, MultipartFile file, User user) {
 
         post.setUser(user);
         post.setPublished(true);
-		post.setCreatedAt(LocalDate.now());
-		post.setUpdatedAt(LocalDate.now());
-		post.setSlug(new Slugify().slugify(post.getTitle()));
+        post.setCreatedAt(LocalDate.now());
+        post.setUpdatedAt(LocalDate.now());
+        post.setSlug(new Slugify().slugify(post.getTitle()));
         post.setImage(imageUpload.saveAndReturnPath(file));
-        
 
         return repository.save(post);
 
     }
 
-    
+    public Post update(Post post, MultipartFile file, User user, String slug) {
+        Post editPost = repository.findBySlugAndPublishedTrue(slug)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+        
+        editPost.setUser(user);
+        editPost.setPublished(true);
+        editPost.setTitle(post.getTitle());
+        editPost.setSummary(post.getSummary());
+        editPost.setContent(post.getContent());
+        editPost.setUpdatedAt(LocalDate.now());
+        editPost.setCategory(post.getCategory());
+        editPost.setSlug(new Slugify().slugify(post.getTitle()));
+
+        if (!file.getOriginalFilename().isEmpty())
+            editPost.setImage(imageUpload.saveAndReturnPath(file));
+
+        return repository.save(editPost);
+    }
+
 }
