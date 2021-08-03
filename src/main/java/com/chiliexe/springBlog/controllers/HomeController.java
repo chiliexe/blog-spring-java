@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-//TODO admin panel, edit user, edit post, form login, paination
+//TODO admin panel, form login, paination
 
 @Controller
 @RequestMapping("/")
