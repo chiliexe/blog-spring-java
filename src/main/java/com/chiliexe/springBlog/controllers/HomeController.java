@@ -10,15 +10,17 @@ import com.chiliexe.springBlog.services.CommentService;
 import com.chiliexe.springBlog.services.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-//TODO admin panel, form login, paination
+//TODO admin panel, form login
 
 @Controller
 @RequestMapping("/")
@@ -31,10 +33,11 @@ public class HomeController {
 	private CommentService commentService;
 
 	@GetMapping("/")
-	public ModelAndView index()
+	public ModelAndView index(@RequestParam(required = false) Integer page)
 	{
 		ModelAndView mv = new ModelAndView("Home/index");
-		List<Post> posts = postService.findAll();
+		Page<Post> posts = postService.findAll(page);
+		
 		mv.addObject("posts", posts);
 		return mv;
 	}

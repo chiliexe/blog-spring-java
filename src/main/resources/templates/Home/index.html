@@ -10,6 +10,7 @@
   <div layout:fragment="content">
     <!-- Page Content -->
     <a th:href="@{/usuario/criar/post}" class="btn btn-dark mt-4">Nova Postagem <i class="fa fa-plus-circle"></i> </a>
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -49,6 +50,50 @@
             <!--/CONTENT-->
         </div>
     </div>
+
+
+    <!-- _pagination.html -->
+    <div class="pagination m-auto" th:if="${posts.getTotalPages() > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:if="${posts.hasPrevious()}">
+                <a class="page-link" href="?page=1">&laquo;</a>
+            </li>
+            <li class="page-item" th:if="${posts.hasPrevious()}">
+                <a class="page-link" th:href="@{|?page=${posts.getNumber()}|}">&lsaquo;</a>
+            </li>
+            
+            <!--          for loop                 -->
+            <li th:each="number : ${#numbers.sequence(1, posts.getTotalPages())}" 
+                class="page-item"
+                th:classappend="${#strings.equals(param.page, number)} ? 'active' : '' "
+                id="page">
+                <a class="page-link" th:text="${number}" th:href="@{|?page=${number}|}"></a>
+            </li>
+            <!--                           -->
+
+
+            <li class="page-item" th:if="${posts.hasNext()}">
+                <a class="page-link" th:href="@{|?page=${posts.getNumber() + 2}|}">&rsaquo;</a>
+            </li>
+            <li class="page-item" th:if="${posts.hasNext()}">
+                <a class="page-link" th:href="@{|?page=${posts.getTotalPages()}|}">&raquo;</a>
+            </li>
+        </ul>
+        <script>
+            let page = new URLSearchParams(location.search).get('page')
+
+            if(page == null)
+            {
+                document.querySelectorAll("#page").item(0).classList.add('active')
+            }
+        </script>
+    </div>
+    <!-- _pagination.html -->
+
+
   </div>
+
+
+
 
 </html>

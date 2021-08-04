@@ -13,6 +13,8 @@ import com.chiliexe.springBlog.utils.ImageUpload;
 import com.github.slugify.Slugify;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PostService {
+
+    public static final Integer itemsPerPage = 10;
 
     @Autowired
     private PostRepository repository;
@@ -54,8 +58,10 @@ public class PostService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
-    public List<Post> findAll() {
-        return repository.findAllByPublishedTrue(Sort.by("id").descending());
+    public Page<Post> findAll(Integer page) {
+        Integer pageNumber = (page == null) ? 1 : page;
+        var pageRequest = PageRequest.of(pageNumber - 1, itemsPerPage, Sort.by("id").descending());
+        return repository.findAllByPublishedTrue(pageRequest);
     }
 
     public Post save(@Valid Post post, MultipartFile file, User user) {

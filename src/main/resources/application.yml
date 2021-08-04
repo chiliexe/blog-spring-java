@@ -1,5 +1,4 @@
 
-
 server:
   error:
     include-stacktrace: never
@@ -7,6 +6,8 @@ server:
 
 
 spring:
+  application:
+    name: spring_blog_full
   datasource:
     url: jdbc:mysql://localhost:3306/blog_spring?useSSL=false&jdbcCompliantTruncation=false&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'
     username: root
@@ -17,3 +18,4 @@ spring:
     show-sql: true
     properties:
       dialect: org.hibernate.dialect.MySQL5Dialect
+
