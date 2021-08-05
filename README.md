@@ -5,7 +5,7 @@ projeto feito em spring boot: Blog completo, feito para vários usuários postar
 
 application properties example: yml
 
-´´´ yaml
+``` yaml
 
 server:
   error:
@@ -27,7 +27,7 @@ spring:
     properties:
       dialect: org.hibernate.dialect.MySQL8Dialect
 
-´´´
+```
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
