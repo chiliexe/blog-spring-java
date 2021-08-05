@@ -5,7 +5,7 @@ projeto feito em spring boot: Blog completo, feito para vários usuários postar
 
 application properties example: yml
 
-´´´yaml
+´´´ yaml
 
 server:
   error:
